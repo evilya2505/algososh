@@ -33,9 +33,12 @@ export const ListPage: React.FC = () => {
   >([]);
   const [isAddingToHead, setIsAddingToHead] = React.useState<boolean>(false);
   const [isAddingToTail, setIsAddingToTai] = React.useState<boolean>(false);
-  const [isDeletingFromHead, setIsDeletingFromHead] = React.useState<boolean>(false);
-  const [isDeletingFromTail, setIsDeletingFromTail] = React.useState<boolean>(false);
-  const [isDeletingByIndex, setIsDeletingByIndex] = React.useState<boolean>(false);
+  const [isDeletingFromHead, setIsDeletingFromHead] =
+    React.useState<boolean>(false);
+  const [isDeletingFromTail, setIsDeletingFromTail] =
+    React.useState<boolean>(false);
+  const [isDeletingByIndex, setIsDeletingByIndex] =
+    React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isAddingByIndex, setIsAddingByIndex] = React.useState<boolean>(false);
 
@@ -202,18 +205,79 @@ export const ListPage: React.FC = () => {
       <div className={list.header}>
         <form className={list.form}>
           <fieldset className={list.fieldset}>
-              <Input name="value" extraClass={list.input} placeholder="Введите значение" type="text" isLimitText={true} maxLength={4} onChange={handleChange}
-              value={input}/>
-            <Button extraClass={list.button} onClick={handleAddToHeadButton} text="Добавить в head" type="button" isLoader={isAddingToHead} disabled={isLoading || listItems.length === 8 || input === ""}/>
-            <Button extraClass={list.button} onClick={handleAddToTailButton} text="Добавить в tail" type="button" isLoader={isAddingToTail} disabled={isLoading || listItems.length === 8 || input === ""}/>
-            <Button extraClass={list.button} onClick={handleDeleteFromHeadButton} text="Удалить из head" type="button" isLoader={isDeletingFromHead} disabled={isLoading || listItems.length === 0}/>
-            <Button extraClass={list.button} onClick={handleDeleteFromTailButton} text="Удалить из tail" type="button" isLoader={isDeletingFromTail} disabled={isLoading || listItems.length === 0}/>
+            <Input
+              name="value"
+              extraClass={list.input}
+              placeholder="Введите значение"
+              type="text"
+              isLimitText={true}
+              maxLength={4}
+              onChange={handleChange}
+              value={input}
+            />
+            <Button
+              extraClass={list.button}
+              onClick={handleAddToHeadButton}
+              text="Добавить в head"
+              type="button"
+              isLoader={isAddingToHead}
+              disabled={isLoading || listItems.length === 8 || input === ""}
+            />
+            <Button
+              extraClass={list.button}
+              onClick={handleAddToTailButton}
+              text="Добавить в tail"
+              type="button"
+              isLoader={isAddingToTail}
+              disabled={isLoading || listItems.length === 8 || input === ""}
+            />
+            <Button
+              extraClass={list.button}
+              onClick={handleDeleteFromHeadButton}
+              text="Удалить из head"
+              type="button"
+              isLoader={isDeletingFromHead}
+              disabled={isLoading || listItems.length === 0}
+            />
+            <Button
+              extraClass={list.button}
+              onClick={handleDeleteFromTailButton}
+              text="Удалить из tail"
+              type="button"
+              isLoader={isDeletingFromTail}
+              disabled={isLoading || listItems.length === 0}
+            />
           </fieldset>
           <fieldset className={list.fieldset}>
-             <Input name="index" extraClass={list.input} placeholder="Введите индекс" type="number" onChange={handleChange}
-              value={index}/>
-            <Button extraClass={list.button} onClick={handleAddByIndexButton} text="Добавить по индексу" type="button" isLoader={isAddingByIndex} disabled={isLoading || listItems.length === 8 || index === "" || input === ""}/>
-            <Button extraClass={list.button} onClick={handleDeleteByIndexButton} text="Удалить по индексу" type="button" isLoader={isDeletingByIndex} disabled={isLoading || index === "" || listItems.length === 0}/>
+            <Input
+              name="index"
+              extraClass={list.input}
+              placeholder="Введите индекс"
+              type="number"
+              onChange={handleChange}
+              value={index}
+            />
+            <Button
+              extraClass={list.button}
+              onClick={handleAddByIndexButton}
+              text="Добавить по индексу"
+              type="button"
+              isLoader={isAddingByIndex}
+              disabled={
+                isLoading ||
+                listItems.length === 8 ||
+                index === "" ||
+                input === ""
+              }
+            />
+            <Button
+              extraClass={list.button}
+              onClick={handleDeleteByIndexButton}
+              text="Удалить по индексу"
+              type="button"
+              isLoader={isDeletingByIndex}
+              disabled={isLoading || index === "" || listItems.length === 0}
+            />
           </fieldset>
         </form>
       </div>
@@ -221,9 +285,10 @@ export const ListPage: React.FC = () => {
       <section className={list.resultsSection}>
         <ul className={list.stack}>
           {listItems.map((number, index) => {
-            let state:ElementStates = ElementStates.Default;
+            let state: ElementStates = ElementStates.Default;
             if (justAddedItemIndex === index) state = ElementStates.Modified;
-            if (currentIndexesToChange?.includes(index)) state = ElementStates.Changing;
+            if (currentIndexesToChange?.includes(index))
+              state = ElementStates.Changing;
             return (
               <>
                 <li className={list.stackItem} key={index}>

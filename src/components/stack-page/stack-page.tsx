@@ -18,7 +18,8 @@ export const StackPage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = React.useState<number | null>(null);
   const [isAddingElement, setIsAddingElement] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [isDeletingElement, setIsDeletingElement] = React.useState<boolean>(false);
+  const [isDeletingElement, setIsDeletingElement] =
+    React.useState<boolean>(false);
   const [isClearing, setIsClearing] = React.useState<boolean>(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -69,24 +70,46 @@ export const StackPage: React.FC = () => {
   async function delay() {
     return new Promise((resolve) => setTimeout(resolve, SHORT_DELAY_IN_MS));
   }
-  
+
   return (
     <SolutionLayout title="Стек">
       <div className={stack.header}>
-
-          <form className={stack.form} onSubmit={handleAddButton}>
-            <fieldset className={stack.fieldset}>
-              <Input extraClass={stack.input} placeholder="Введите текст" type="text" isLimitText={true} maxLength={4} onChange={handleChange}
-              value={input}/>
-              <Button extraClass={stack.button} text="Добавить" type="submit" isLoader={isAddingElement} disabled={isLoading || stackItems.length === 8}/>
-              
-            </fieldset>
-            <Button extraClass={stack.button} onClick={handleDeleteButton} text="Удалить" type="button" isLoader={isDeletingElement} disabled={isLoading || stackItems.length === 0}/>
-            <Button extraClass={stack.button} onClick={handleClearButton} text="Очистить" type="button" isLoader={isClearing} disabled={isLoading || stackItems.length === 0}/>
-
-          </form>
-
-
+        <form className={stack.form} onSubmit={handleAddButton}>
+          <fieldset className={stack.fieldset}>
+            <Input
+              extraClass={stack.input}
+              placeholder="Введите текст"
+              type="text"
+              isLimitText={true}
+              maxLength={4}
+              onChange={handleChange}
+              value={input}
+            />
+            <Button
+              extraClass={stack.button}
+              text="Добавить"
+              type="submit"
+              isLoader={isAddingElement}
+              disabled={isLoading || stackItems.length === 8}
+            />
+          </fieldset>
+          <Button
+            extraClass={stack.button}
+            onClick={handleDeleteButton}
+            text="Удалить"
+            type="button"
+            isLoader={isDeletingElement}
+            disabled={isLoading || stackItems.length === 0}
+          />
+          <Button
+            extraClass={stack.button}
+            onClick={handleClearButton}
+            text="Очистить"
+            type="button"
+            isLoader={isClearing}
+            disabled={isLoading || stackItems.length === 0}
+          />
+        </form>
       </div>
 
       <section className={stack.resultsSection}>
@@ -94,7 +117,8 @@ export const StackPage: React.FC = () => {
           {stackItems.map((number, index) => {
             let state: ElementStates = ElementStates.Default;
 
-            if (currentIndex === index ? true : false) state = ElementStates.Changing;
+            if (currentIndex === index ? true : false)
+              state = ElementStates.Changing;
 
             return (
               <li className={stack.stackItem} key={index}>

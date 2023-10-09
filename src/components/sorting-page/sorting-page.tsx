@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import sorting from "./sorting-page.module.css";
@@ -53,7 +53,7 @@ export const SortingPage: React.FC = () => {
   };
 
   const selectionSort = React.useCallback(async () => {
-    const newArray = [...arrayRef.current]; 
+    const newArray = [...arrayRef.current];
     const n = newArray.length;
 
     for (
@@ -89,6 +89,7 @@ export const SortingPage: React.FC = () => {
         setArray([...newArray]);
       }
     }
+
     for (let i = 0; i < arrayRef.current.length; i++) {
       if (!arrayRef.current[i].isSorted) arrayRef.current[i].isSorted = true;
     }
@@ -97,16 +98,20 @@ export const SortingPage: React.FC = () => {
 
     setIsSorting(false);
   }, [isDescending]);
-  
+
   const bubbleSort = React.useCallback(async () => {
-    const newArray = [...arrayRef.current]; 
+    const newArray = [...arrayRef.current];
     const n = newArray.length;
     let swapped;
+
+    let lastUnsortedIndex = n - 1;
 
     do {
       swapped = false;
 
-      for (let i = 0; i < n - 1; i++) {
+      for (let i = 0; i < lastUnsortedIndex; i++) {
+        if (newArray[i].isSorted || newArray[i + 1].isSorted) continue;
+
         setChangingNumbers([newArray[i].id, newArray[i + 1].id]);
 
         await delay();
@@ -131,13 +136,18 @@ export const SortingPage: React.FC = () => {
         arrayRef.current = [...newArray];
         setArray([...newArray]);
       }
-    } while (swapped);
 
+      newArray[lastUnsortedIndex].isSorted = true;
+      setArray([...newArray]);
+
+      lastUnsortedIndex--;
+    } while (swapped);
     for (let i = 0; i < arrayRef.current.length; i++) {
       if (!arrayRef.current[i].isSorted) arrayRef.current[i].isSorted = true;
     }
 
     setArray([...arrayRef.current]);
+
     setIsSorting(false);
   }, [isDescending]);
 
@@ -159,11 +169,21 @@ export const SortingPage: React.FC = () => {
   };
 
   const handleAscendingClick = () => {
+    for (let i = 0; i < arrayRef.current.length; i++) {
+      arrayRef.current[i].isSorted = false;
+    }
+
+    setArray([...arrayRef.current]);
     setIsDescending(false);
     setIsSorting(true);
   };
 
   const handleDescendingClick = () => {
+    for (let i = 0; i < arrayRef.current.length; i++) {
+      arrayRef.current[i].isSorted = false;
+    }
+
+    setArray([...arrayRef.current]);
     setIsDescending(true);
     setIsSorting(true);
   };
@@ -180,7 +200,7 @@ export const SortingPage: React.FC = () => {
 
   React.useEffect(() => {
     handleNewArrayButton();
-  }, [])
+  }, []);
 
   async function delay() {
     return new Promise((resolve) => setTimeout(resolve, DELAY_IN_MS));
@@ -208,13 +228,32 @@ export const SortingPage: React.FC = () => {
           </div>
 
           <div className={sorting.sortingButtons}>
-            <Button onClick={handleAscendingClick} text="По возрастанию" sorting={Direction.Ascending} type="button" isLoader={isSorting && !isDescending} disabled={isSorting}/>
-            <Button onClick={handleDescendingClick} text="По убыванию" sorting={Direction.Descending} type="button" isLoader={isSorting && isDescending} disabled={isSorting}/>
+            <Button
+              onClick={handleAscendingClick}
+              text="По возрастанию"
+              sorting={Direction.Ascending}
+              type="button"
+              isLoader={isSorting && !isDescending}
+              disabled={isSorting}
+            />
+            <Button
+              onClick={handleDescendingClick}
+              text="По убыванию"
+              sorting={Direction.Descending}
+              type="button"
+              isLoader={isSorting && isDescending}
+              disabled={isSorting}
+            />
           </div>
         </div>
 
-        <Button onClick={handleNewArrayButton} text="Новый массив" type="button" isLoader={isCreatingArrat} disabled={isSorting || isCreatingArrat}/>
-
+        <Button
+          onClick={handleNewArrayButton}
+          text="Новый массив"
+          type="button"
+          isLoader={isCreatingArrat}
+          disabled={isSorting || isCreatingArrat}
+        />
       </div>
 
       <section className={sorting.resultsSection}>

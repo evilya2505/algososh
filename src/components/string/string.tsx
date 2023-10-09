@@ -40,20 +40,20 @@ export const StringComponent: React.FC = () => {
       const newLettersArray = [...prevLettersArray];
       let left = 0;
       let right = newLettersArray.length - 1;
-  
+
       const interval = setInterval(() => {
         if (left < right) {
           setCurrentIndex([left, right]);
-  
+
           const temp = newLettersArray[left];
           newLettersArray[left] = newLettersArray[right];
           newLettersArray[right] = temp;
-  
+
           if (left !== 0 && right !== newLettersArray.length - 1) {
             if (left === 0) {
               newLettersArray[right + 1].isSorted = true;
             }
-  
+
             if (right === newLettersArray.length - 1) {
               newLettersArray[left - 1].isSorted = true;
             } else {
@@ -61,7 +61,7 @@ export const StringComponent: React.FC = () => {
               newLettersArray[right + 1].isSorted = true;
             }
           }
-  
+
           left++;
           right--;
         } else {
@@ -73,11 +73,10 @@ export const StringComponent: React.FC = () => {
           setIsChanging(false);
         }
       }, DELAY_IN_MS);
-  
+
       return newLettersArray;
     });
   }, []);
-  
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setStringInput(e.target.value);
@@ -120,10 +119,7 @@ export const StringComponent: React.FC = () => {
 
             return (
               <li className={string.letter} key={letterObj.id}>
-                <Circle
-                  state={state}
-                  letter={letterObj.letter}
-                />
+                <Circle state={state} letter={letterObj.letter} />
               </li>
             );
           })}

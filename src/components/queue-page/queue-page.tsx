@@ -21,7 +21,8 @@ export const QueuePage: React.FC = () => {
   );
   const [isAddingElement, setIsAddingElement] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [isDeletingElement, setIsDeletingElement] = React.useState<boolean>(false);
+  const [isDeletingElement, setIsDeletingElement] =
+    React.useState<boolean>(false);
   const [isClearing, setIsClearing] = React.useState<boolean>(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -75,25 +76,52 @@ export const QueuePage: React.FC = () => {
   return (
     <SolutionLayout title="Очередь">
       <div className={queue.header}>
-
-          <form className={queue.form} onSubmit={handleAddButton}>
-            <fieldset className={queue.fieldset}>
-              <Input extraClass={queue.input} placeholder="Введите значение" type="text" isLimitText={true} maxLength={4} onChange={handleChange}
-              value={input}/>
-              <Button extraClass={queue.button} text="Добавить" type="submit" isLoader={isAddingElement} disabled={isLoading || queueItems[queueItems.length-1] !== undefined}/>
-            </fieldset>
-            <Button extraClass={queue.button} onClick={handleDeleteButton} text="Удалить" type="button" isLoader={isDeletingElement} disabled={isLoading}/>
-            <Button extraClass={queue.button} onClick={handleClearButton} text="Очистить" type="button" isLoader={isClearing} disabled={isLoading}/>
-
-          </form>
-
+        <form className={queue.form} onSubmit={handleAddButton}>
+          <fieldset className={queue.fieldset}>
+            <Input
+              extraClass={queue.input}
+              placeholder="Введите значение"
+              type="text"
+              isLimitText={true}
+              maxLength={4}
+              onChange={handleChange}
+              value={input}
+            />
+            <Button
+              extraClass={queue.button}
+              text="Добавить"
+              type="submit"
+              isLoader={isAddingElement}
+              disabled={
+                isLoading || queueItems[queueItems.length - 1] !== undefined
+              }
+            />
+          </fieldset>
+          <Button
+            extraClass={queue.button}
+            onClick={handleDeleteButton}
+            text="Удалить"
+            type="button"
+            isLoader={isDeletingElement}
+            disabled={isLoading}
+          />
+          <Button
+            extraClass={queue.button}
+            onClick={handleClearButton}
+            text="Очистить"
+            type="button"
+            isLoader={isClearing}
+            disabled={isLoading}
+          />
+        </form>
       </div>
 
       <section className={queue.resultsSection}>
         <ul className={queue.queue}>
           {queueItems.map((number, index) => {
             let state: ElementStates = ElementStates.Default;
-            if (currentIndex === index ? true : false) state = ElementStates.Changing;
+            if (currentIndex === index ? true : false)
+              state = ElementStates.Changing;
             try {
               return (
                 <li className={queue.queueItem} key={index}>

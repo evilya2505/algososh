@@ -107,7 +107,6 @@ export default class LinkedList<T> {
     return count;
   }
 
-  // Преобразует список в массив
   getList(): T[] {
     const result: T[] = [];
     let current = this.head;
@@ -120,7 +119,7 @@ export default class LinkedList<T> {
     return result;
   }
 
-  // Возвращает индекс последнего элемента (tail)
+  // Возвращает индекс последнего элемента
   getTailIndex(): number | null {
     let current = this.head;
     let currentIndex = 0;
@@ -135,7 +134,7 @@ export default class LinkedList<T> {
     return tailIndex;
   }
 
-  // Возвращает индекс первого элемента (head)
+  // Возвращает индекс первого элемента
   getHeadIndex(): number | null {
     if (this.head === null) {
       return null;

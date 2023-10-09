@@ -59,31 +59,44 @@ export const FibonacciPage: React.FC = () => {
       let prev1 = 1;
       let prev2 = 1;
       let current = 0;
-  
+
       for (let i = 2; i <= n; i++) {
         current = prev1 + prev2;
         prev1 = prev2;
         prev2 = current;
       }
-  
+
       return current;
     }
-  }  
+  }
 
   return (
     <SolutionLayout title="Последовательность Фибоначчи">
       <form className={fibbonacci.form} onSubmit={handleFibonacciButton}>
         <fieldset className={fibbonacci.fieldset}>
-          <Input extraClass={fibbonacci.input} placeholder="Введите текст" type="number" isLimitText={true} min={1} max={19} onChange={handleChange}
-        value={stringInput}/>
-          <Button text="Рассчитать" type="submit" isLoader={isLoading} disabled={isLoading || stringInput === ""}/>
+          <Input
+            extraClass={fibbonacci.input}
+            placeholder="Введите текст"
+            type="number"
+            isLimitText={true}
+            min={1}
+            max={19}
+            onChange={handleChange}
+            value={stringInput}
+          />
+          <Button
+            text="Рассчитать"
+            type="submit"
+            isLoader={isLoading}
+            disabled={isLoading || stringInput === ""}
+          />
         </fieldset>
       </form>
       <section className={fibbonacci.resultSection}>
         <ul className={fibbonacci.letters}>
           {numbersArray.map((numberObj, index) => (
             <li className={fibbonacci.letter} key={numberObj.id}>
-              <Circle letter={numberObj.number.toString()} index={index}/>
+              <Circle letter={numberObj.number.toString()} index={index} />
             </li>
           ))}
         </ul>
