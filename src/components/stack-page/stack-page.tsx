@@ -3,6 +3,10 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import stack from "./stack-page.module.css";
 import { Circle } from "../ui/circle/circle";
 import Stack from "./stack";
+import { Button } from "../ui/button/button";
+import { Input } from "../ui/input/input";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { ElementStates } from "../../types/element-states";
 
 const stackVar = new Stack<number>();
 
@@ -12,95 +16,96 @@ export const StackPage: React.FC = () => {
     stackVar.getStack()
   );
   const [currentIndex, setCurrentIndex] = React.useState<number | null>(null);
+  const [isAddingElement, setIsAddingElement] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isDeletingElement, setIsDeletingElement] = React.useState<boolean>(false);
+  const [isClearing, setIsClearing] = React.useState<boolean>(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput(e.target.value);
   }
 
-  async function handleAddButton() {
+  async function handleAddButton(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsAddingElement(true);
+    setIsLoading(true);
     stackVar.push(parseInt(input));
     setCurrentIndex(stackVar.getSize() - 1);
     setStackItems([...stackVar.getStack()]);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
+    setIsLoading(false);
     setCurrentIndex(null);
+    setIsAddingElement(false);
   }
 
   async function handleDeleteButton() {
+    setIsDeletingElement(true);
+    setIsLoading(true);
     setCurrentIndex(stackVar.getSize() - 1);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
     stackVar.pop();
     setStackItems([...stackVar.getStack()]);
     setCurrentIndex(null);
+    setIsLoading(false);
+    setIsDeletingElement(false);
   }
 
   async function handleClearButton() {
+    setIsClearing(true);
+    setIsLoading(true);
     stackVar.clear();
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
     setStackItems([...stackVar.getStack()]);
+    setIsClearing(false);
+    setIsLoading(false);
   }
 
+  async function delay() {
+    return new Promise((resolve) => setTimeout(resolve, SHORT_DELAY_IN_MS));
+  }
+  
   return (
     <SolutionLayout title="Стек">
       <div className={stack.header}>
-        <div className={stack.leftSection}>
-          <form className={stack.form}>
+
+          <form className={stack.form} onSubmit={handleAddButton}>
             <fieldset className={stack.fieldset}>
-              <input
-                onChange={handleChange}
-                value={input}
-                type="text"
-                name="string"
-                className={stack.input}
-                placeholder="Введите текст"
-                maxLength={4}
-              />
-              <button
-                onClick={handleAddButton}
-                type="button"
-                className={stack.button}
-              >
-                Добавить
-              </button>
+              <Input extraClass={stack.input} placeholder="Введите текст" type="text" isLimitText={true} maxLength={4} onChange={handleChange}
+              value={input}/>
+              <Button extraClass={stack.button} text="Добавить" type="submit" isLoader={isAddingElement} disabled={isLoading || stackItems.length === 8}/>
+              
             </fieldset>
-            <label className={stack.label}>Максимум — 4 символа</label>
+            <Button extraClass={stack.button} onClick={handleDeleteButton} text="Удалить" type="button" isLoader={isDeletingElement} disabled={isLoading || stackItems.length === 0}/>
+            <Button extraClass={stack.button} onClick={handleClearButton} text="Очистить" type="button" isLoader={isClearing} disabled={isLoading || stackItems.length === 0}/>
+
           </form>
 
-          <button
-            onClick={handleDeleteButton}
-            type="button"
-            className={stack.button}
-          >
-            Удалить
-          </button>
-        </div>
-        <button
-          onClick={handleClearButton}
-          type="button"
-          className={stack.button}
-        >
-          Очистить
-        </button>
+
       </div>
 
       <section className={stack.resultsSection}>
         <ul className={stack.stack}>
           {stackItems.map((number, index) => {
+            let state: ElementStates = ElementStates.Default;
+
+            if (currentIndex === index ? true : false) state = ElementStates.Changing;
+
             return (
               <li className={stack.stackItem} key={index}>
                 <p className={stack.index}>
-                  {index == stackVar.getSize() - 1 ? "top" : ""}
+                  {index === stackVar.getSize() - 1 ? "top" : ""}
                 </p>
                 <Circle
                   letter={number.toString()}
-                  isChanging={currentIndex == index ? true : false}
+                  state={state}
+                  index={index}
                 />
-                <p className={stack.index}>{index}</p>
               </li>
             );
           })}

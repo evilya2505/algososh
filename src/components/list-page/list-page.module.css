@@ -1,5 +1,4 @@
 .form {
-  /* max-width: 522px; */
   text-align: left;
 }
 
@@ -8,8 +7,8 @@
   margin: 0;
   border: none;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: flex-start;
+
 }
 
 .fieldset:not(:last-of-type) {
@@ -21,50 +20,16 @@
 }
 
 .input {
-  padding: 19px 30px 19px 16px;
-  box-sizing: border-box;
   margin: 0 12px 0 0;
-  font-family: "Segoe UI";
-  font-size: 18px;
-  line-height: 22px;
-  height: 60px;
   width: 204px;
-  border-radius: 14px;
-  font-weight: 400;
-  border: 1px solid #7a7a7a;
-}
-
-.label {
-  padding: 0 16px;
-  color: #3d3d3d;
-  font-family: "Segoe UI";
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
 }
 
 .header {
   margin: 48px auto;
   max-width: 952px;
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   justify-content: space-between;
-}
-
-.button {
-  display: flex;
-  align-items: center;
-  padding: 18.5px 24px;
-  border: none;
-  border-radius: 14px;
-  background-color: #85cfff;
-  color: #292929;
-  font-family: "Segoe UI";
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 23px;
-  cursor: pointer;
 }
 
 .button:not(:last-of-type) {
@@ -73,7 +38,7 @@
 
 .leftSection {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .stack {

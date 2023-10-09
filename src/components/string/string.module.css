@@ -14,38 +14,7 @@
 
 .input {
   margin: 0 12px 0 0;
-  font-family: "Segoe UI";
-  font-size: 18px;
-  line-height: 22px;
-  height: 60px;
   width: 377px;
-  border-radius: 14px;
-  font-weight: 400;
-  border: 1px solid #7a7a7a;
-}
-
-.button {
-  width: 133px;
-  padding: 18px 24px;
-  border: none;
-  border-radius: 14px;
-  background-color: #85cfff;
-  color: #292929;
-  font-family: "Segoe UI";
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 23px;
-}
-
-.label {
-  padding: 0 16px;
-  margin: 4px 0 0;
-  color: #3d3d3d;
-  font-family: "Segoe UI";
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
 }
 
 .resultSection {

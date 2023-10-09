@@ -10,7 +10,7 @@ export default class Queue<T> {
   // Добавляет элемент в конец очереди
   enqueue(item: T): void {
     for (let i = 0; i < this.getSize(); i++) {
-      if (this.items[i] == undefined) {
+      if (this.items[i] ===  undefined) {
         this.items[i] = item;
 
         break;

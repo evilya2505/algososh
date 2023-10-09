@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React  from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import sorting from "./sorting-page.module.css";
-import stroke from "../../images/Stroke.png";
-import union from "../../images/Union.png";
 import { v4 as uuidv4 } from "uuid";
+import { Button } from "../ui/button/button";
+import { Direction } from "../../types/direction";
+import { DELAY_IN_MS } from "../../constants/delays";
 
 function randomArr() {
   const length = Math.floor(Math.random() * (17 - 3 + 1) + 3);
@@ -28,21 +29,13 @@ export const SortingPage: React.FC = () => {
   const [isFirstChecked, setIsFirstChecked] = React.useState<boolean>(true);
   const [isSecondChecked, setIsSecondChecked] = React.useState<boolean>(false);
   const [array, setArray] = React.useState<Array<TNumberType>>([]);
+  const arrayRef = React.useRef<Array<TNumberType>>([]);
   const [isSorting, setIsSorting] = React.useState<boolean>(false);
   const [changingNumbers, setChangingNumbers] = React.useState<Array<string>>(
     []
   );
   const [isDescending, setIsDescending] = React.useState<boolean>(false);
-
-  React.useEffect(() => {
-    if (isSorting) {
-      if (isFirstChecked) {
-        selectionSort();
-      } else if (isSecondChecked) {
-        bubbleSort();
-      }
-    }
-  }, [isSorting]);
+  const [isCreatingArrat, setIsCreatingArrat] = React.useState<boolean>(false);
 
   const handleRadios = (e: React.ChangeEvent<HTMLInputElement>) => {
     switch (e.target.name) {
@@ -58,8 +51,9 @@ export const SortingPage: React.FC = () => {
         break;
     }
   };
-  const selectionSort = async () => {
-    const newArray = [...array];
+
+  const selectionSort = React.useCallback(async () => {
+    const newArray = [...arrayRef.current]; 
     const n = newArray.length;
 
     for (
@@ -71,7 +65,7 @@ export const SortingPage: React.FC = () => {
 
       for (let i = currentElementIndex + 1; i < n; i++) {
         setChangingNumbers([newArray[currentElementIndex].id, newArray[i].id]);
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await delay();
 
         if (isDescending) {
           if (newArray[i].number > newArray[indexToCompare].number) {
@@ -91,15 +85,21 @@ export const SortingPage: React.FC = () => {
         const temp = newArray[indexToCompare];
         newArray[indexToCompare] = newArray[currentElementIndex];
         newArray[currentElementIndex] = temp;
+        arrayRef.current = [...newArray];
         setArray([...newArray]);
       }
     }
+    for (let i = 0; i < arrayRef.current.length; i++) {
+      if (!arrayRef.current[i].isSorted) arrayRef.current[i].isSorted = true;
+    }
+
+    setArray([...arrayRef.current]);
 
     setIsSorting(false);
-  };
-
-  const bubbleSort = async () => {
-    const newArray = [...array];
+  }, [isDescending]);
+  
+  const bubbleSort = React.useCallback(async () => {
+    const newArray = [...arrayRef.current]; 
     const n = newArray.length;
     let swapped;
 
@@ -109,7 +109,7 @@ export const SortingPage: React.FC = () => {
       for (let i = 0; i < n - 1; i++) {
         setChangingNumbers([newArray[i].id, newArray[i + 1].id]);
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await delay();
 
         if (isDescending) {
           if (newArray[i].number < newArray[i + 1].number) {
@@ -128,14 +128,21 @@ export const SortingPage: React.FC = () => {
         }
 
         setChangingNumbers([]);
+        arrayRef.current = [...newArray];
         setArray([...newArray]);
       }
     } while (swapped);
 
+    for (let i = 0; i < arrayRef.current.length; i++) {
+      if (!arrayRef.current[i].isSorted) arrayRef.current[i].isSorted = true;
+    }
+
+    setArray([...arrayRef.current]);
     setIsSorting(false);
-  };
+  }, [isDescending]);
 
   const handleNewArrayButton = () => {
+    setIsCreatingArrat(true);
     const tempNumbersArray: Array<number> = randomArr();
     const tempObjectsArray: Array<TNumberType> = [];
     for (let i: number = 0; i < tempNumbersArray.length; i++) {
@@ -146,7 +153,9 @@ export const SortingPage: React.FC = () => {
         isSorted: false,
       });
     }
-    setArray(tempObjectsArray);
+    arrayRef.current = [...tempObjectsArray];
+    setArray([...tempObjectsArray]);
+    setIsCreatingArrat(false);
   };
 
   const handleAscendingClick = () => {
@@ -159,6 +168,24 @@ export const SortingPage: React.FC = () => {
     setIsSorting(true);
   };
 
+  React.useEffect(() => {
+    if (isSorting) {
+      if (isFirstChecked) {
+        selectionSort();
+      } else if (isSecondChecked) {
+        bubbleSort();
+      }
+    }
+  }, [isSorting, isFirstChecked, isSecondChecked, bubbleSort, selectionSort]);
+
+  React.useEffect(() => {
+    handleNewArrayButton();
+  }, [])
+
+  async function delay() {
+    return new Promise((resolve) => setTimeout(resolve, DELAY_IN_MS));
+  }
+
   return (
     <SolutionLayout title="Сортировка массива">
       <div className={sorting.header}>
@@ -169,63 +196,30 @@ export const SortingPage: React.FC = () => {
               isChecked={isFirstChecked}
               onChange={handleRadios}
               name="1"
+              disabled={isSorting}
             />
             <RadioInput
               label="Пузырек"
               isChecked={isSecondChecked}
               onChange={handleRadios}
               name="2"
+              disabled={isSorting}
             />
           </div>
 
           <div className={sorting.sortingButtons}>
-            <button
-              type="button"
-              className={sorting.button}
-              onClick={handleAscendingClick}
-              disabled={isSorting}
-            >
-              <img
-                className={sorting.buttonIcon}
-                src={union}
-                alt="По возрастанию"
-              />
-              <p className={sorting.buttonText}>По возрастанию</p>
-            </button>
-            <button
-              type="button"
-              className={sorting.button}
-              onClick={handleDescendingClick}
-              disabled={isSorting}
-            >
-              <img
-                className={sorting.buttonIcon}
-                src={stroke}
-                alt="По убыванию"
-              />
-              <p className={sorting.buttonText}>По убыванию</p>
-            </button>
+            <Button onClick={handleAscendingClick} text="По возрастанию" sorting={Direction.Ascending} type="button" isLoader={isSorting && !isDescending} disabled={isSorting}/>
+            <Button onClick={handleDescendingClick} text="По убыванию" sorting={Direction.Descending} type="button" isLoader={isSorting && isDescending} disabled={isSorting}/>
           </div>
         </div>
 
-        <button
-          type="button"
-          className={sorting.button}
-          onClick={handleNewArrayButton}
-          disabled={isSorting}
-        >
-          Новый массив
-        </button>
+        <Button onClick={handleNewArrayButton} text="Новый массив" type="button" isLoader={isCreatingArrat} disabled={isSorting || isCreatingArrat}/>
+
       </div>
 
       <section className={sorting.resultsSection}>
         <ul className={sorting.numbers}>
           {array.map((obj, index) => {
-            console.log(
-              changingNumbers.includes(obj.id),
-              changingNumbers,
-              obj.id
-            );
             return (
               <li key={index} className={sorting.number}>
                 <div

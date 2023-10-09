@@ -52,6 +52,7 @@
 }
 
 .numbers {
+  height: 392px;
   padding: 0;
   display: flex;
   align-items: flex-end;

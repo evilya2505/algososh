@@ -5,6 +5,11 @@ import { Circle } from "../ui/circle/circle";
 import LinkedList from "./list";
 import arrow from "../../images/ChevronRight.svg";
 import { TAIL, HEAD } from "../../constants/element-captions";
+import { Button } from "../ui/button/button";
+import { Input } from "../ui/input/input";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { ElementStates } from "../../types/element-states";
+
 const linkedList = new LinkedList<number>();
 
 export const ListPage: React.FC = () => {
@@ -26,14 +31,25 @@ export const ListPage: React.FC = () => {
   const [currentIndexesToChange, setCurrentIndexesToChange] = React.useState<
     number[]
   >([]);
+  const [isAddingToHead, setIsAddingToHead] = React.useState<boolean>(false);
+  const [isAddingToTail, setIsAddingToTai] = React.useState<boolean>(false);
+  const [isDeletingFromHead, setIsDeletingFromHead] = React.useState<boolean>(false);
+  const [isDeletingFromTail, setIsDeletingFromTail] = React.useState<boolean>(false);
+  const [isDeletingByIndex, setIsDeletingByIndex] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isAddingByIndex, setIsAddingByIndex] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     linkedList.append(0);
     linkedList.append(34);
     linkedList.append(8);
     linkedList.append(1);
-    console.log(linkedList.toArray());
-    setListItems([...linkedList.toArray()]);
+
+    setListItems([...linkedList.getList()]);
+
+    return () => {
+      linkedList.clear();
+    };
   }, []);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -50,59 +66,77 @@ export const ListPage: React.FC = () => {
   }
 
   async function handleAddToHeadButton() {
+    setIsAddingToHead(true);
+    setIsLoading(true);
     setCurrentIndexToAdd(0);
     setNextNumber(parseInt(input));
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
     linkedList.prepend(parseInt(input));
-    setListItems([...linkedList.toArray()]);
+    setListItems([...linkedList.getList()]);
     setCurrentIndexToAdd(undefined);
     setNextNumber(undefined);
     setJustAddedItemIndex(0);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
     setJustAddedItemIndex(undefined);
+    setIsAddingToHead(false);
+    setIsLoading(false);
   }
 
   async function handleAddToTailButton() {
+    setIsAddingToTai(true);
+    setIsLoading(true);
     setCurrentIndexToAdd(linkedList.size() - 1);
     setNextNumber(parseInt(input));
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
     linkedList.append(parseInt(input));
-    setListItems([...linkedList.toArray()]);
+    setListItems([...linkedList.getList()]);
     setCurrentIndexToAdd(undefined);
     setNextNumber(undefined);
     setJustAddedItemIndex(linkedList.size() - 1);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
     setJustAddedItemIndex(undefined);
+    setIsAddingToTai(false);
+    setIsLoading(false);
   }
 
   async function handleDeleteFromHeadButton() {
+    setIsDeletingFromHead(true);
+    setIsLoading(true);
     setCurrentIndexToDelete(0);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
     linkedList.remove(0);
-    setListItems([...linkedList.toArray()]);
+    setListItems([...linkedList.getList()]);
     setCurrentIndexToDelete(undefined);
+    setIsDeletingFromHead(false);
+    setIsLoading(false);
   }
   async function handleDeleteFromTailButton() {
+    setIsDeletingFromTail(true);
+    setIsLoading(true);
     setCurrentIndexToDelete(linkedList.size() - 1);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
     linkedList.remove(linkedList.size() - 1);
-    setListItems([...linkedList.toArray()]);
+    setListItems([...linkedList.getList()]);
     setCurrentIndexToDelete(undefined);
+    setIsDeletingFromTail(false);
+    setIsLoading(false);
   }
 
   async function handleAddByIndexButton() {
+    setIsAddingByIndex(true);
+    setIsLoading(true);
     const indexesToAdd = [];
 
     setCurrentIndexToAdd(0);
@@ -110,12 +144,12 @@ export const ListPage: React.FC = () => {
     for (let i = 0; i < parseInt(index); i++) {
       setNextNumber(parseInt(input));
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await delay();
 
       if (i !== parseInt(index) - 1) setCurrentIndexToAdd(i + 1);
       indexesToAdd.push(i);
       setCurrentIndexesToChange([...indexesToAdd, i]);
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await delay();
     }
 
     setCurrentIndexToAdd(undefined);
@@ -123,34 +157,44 @@ export const ListPage: React.FC = () => {
     setCurrentIndexesToChange([]);
 
     linkedList.insert(parseInt(input), parseInt(index));
-    setListItems([...linkedList.toArray()]);
+    setListItems([...linkedList.getList()]);
 
     setJustAddedItemIndex(parseInt(index));
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
     setJustAddedItemIndex(undefined);
+    setIsAddingByIndex(false);
+    setIsLoading(false);
   }
 
   async function handleDeleteByIndexButton() {
+    setIsDeletingByIndex(true);
+    setIsLoading(true);
     const indexesToDelete = [];
 
     for (let i = 0; i < parseInt(index) + 1; i++) {
       indexesToDelete.push(i);
       setCurrentIndexesToChange([...indexesToDelete, i]);
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await delay();
     }
     indexesToDelete.pop();
     setCurrentIndexesToChange([...indexesToDelete]);
     setCurrentIndexToDelete(parseInt(index));
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
     setCurrentIndexesToChange([]);
     setCurrentIndexToDelete(undefined);
 
     linkedList.remove(parseInt(index));
-    setListItems([...linkedList.toArray()]);
+    setListItems([...linkedList.getList()]);
+    setIsDeletingByIndex(false);
+    setIsLoading(false);
+  }
+
+  async function delay() {
+    return new Promise((resolve) => setTimeout(resolve, SHORT_DELAY_IN_MS));
   }
 
   return (
@@ -158,69 +202,18 @@ export const ListPage: React.FC = () => {
       <div className={list.header}>
         <form className={list.form}>
           <fieldset className={list.fieldset}>
-            <input
-              onChange={handleChange}
-              value={input}
-              type="text"
-              name="value"
-              className={list.input}
-              placeholder="Введите значение"
-              maxLength={4}
-            />
-            <button
-              onClick={handleAddToHeadButton}
-              type="button"
-              className={list.button}
-            >
-              Добавить в head
-            </button>
-            <button
-              onClick={handleAddToTailButton}
-              type="button"
-              className={list.button}
-            >
-              Добавить в tail
-            </button>
-            <button
-              onClick={handleDeleteFromHeadButton}
-              type="button"
-              className={list.button}
-            >
-              Удалить из head
-            </button>
-            <button
-              onClick={handleDeleteFromTailButton}
-              type="button"
-              className={list.button}
-            >
-              Удалить из tail
-            </button>
+              <Input name="value" extraClass={list.input} placeholder="Введите значение" type="text" isLimitText={true} maxLength={4} onChange={handleChange}
+              value={input}/>
+            <Button extraClass={list.button} onClick={handleAddToHeadButton} text="Добавить в head" type="button" isLoader={isAddingToHead} disabled={isLoading || listItems.length === 8 || input === ""}/>
+            <Button extraClass={list.button} onClick={handleAddToTailButton} text="Добавить в tail" type="button" isLoader={isAddingToTail} disabled={isLoading || listItems.length === 8 || input === ""}/>
+            <Button extraClass={list.button} onClick={handleDeleteFromHeadButton} text="Удалить из head" type="button" isLoader={isDeletingFromHead} disabled={isLoading || listItems.length === 0}/>
+            <Button extraClass={list.button} onClick={handleDeleteFromTailButton} text="Удалить из tail" type="button" isLoader={isDeletingFromTail} disabled={isLoading || listItems.length === 0}/>
           </fieldset>
-          <label className={list.label}>Максимум — 4 символа</label>
           <fieldset className={list.fieldset}>
-            <input
-              onChange={handleChange}
-              value={index}
-              type="text"
-              name="index"
-              className={list.input}
-              placeholder="Введите индекс"
-              maxLength={4}
-            />
-            <button
-              onClick={handleAddByIndexButton}
-              type="button"
-              className={list.button}
-            >
-              Добавить по индексу
-            </button>
-            <button
-              onClick={handleDeleteByIndexButton}
-              type="button"
-              className={list.button}
-            >
-              Удалить по индексу
-            </button>
+             <Input name="index" extraClass={list.input} placeholder="Введите индекс" type="number" onChange={handleChange}
+              value={index}/>
+            <Button extraClass={list.button} onClick={handleAddByIndexButton} text="Добавить по индексу" type="button" isLoader={isAddingByIndex} disabled={isLoading || listItems.length === 8 || index === "" || input === ""}/>
+            <Button extraClass={list.button} onClick={handleDeleteByIndexButton} text="Удалить по индексу" type="button" isLoader={isDeletingByIndex} disabled={isLoading || index === "" || listItems.length === 0}/>
           </fieldset>
         </form>
       </div>
@@ -228,14 +221,17 @@ export const ListPage: React.FC = () => {
       <section className={list.resultsSection}>
         <ul className={list.stack}>
           {listItems.map((number, index) => {
+            let state:ElementStates = ElementStates.Default;
+            if (justAddedItemIndex === index) state = ElementStates.Modified;
+            if (currentIndexesToChange?.includes(index)) state = ElementStates.Changing;
             return (
               <>
                 <li className={list.stackItem} key={index}>
-                  {currentIndexToAdd == index && (
+                  {currentIndexToAdd === index && (
                     <Circle
                       extraClass={list.smallStackItem}
                       letter={nextNumber?.toString()}
-                      isChanging={true}
+                      state={ElementStates.Changing}
                       isSmall={true}
                     />
                   )}
@@ -243,34 +239,33 @@ export const ListPage: React.FC = () => {
                   <Circle
                     extraClass={list.bigStackItem}
                     letter={
-                      currentIndexToDelete != index ? number?.toString() : ""
+                      currentIndexToDelete !== index ? number?.toString() : ""
                     }
                     tail={
-                      linkedList.getTailIndex() == index &&
-                      currentIndexToDelete != index
+                      linkedList.getTailIndex() === index &&
+                      currentIndexToDelete !== index
                         ? TAIL
                         : null
                     }
                     head={
-                      linkedList.getHeadIndex() == index &&
-                      currentIndexToAdd != index
+                      linkedList.getHeadIndex() === index &&
+                      currentIndexToAdd !== index
                         ? HEAD
                         : null
                     }
-                    isSorted={justAddedItemIndex == index ? true : false}
-                    isChanging={currentIndexesToChange?.includes(index)}
+                    state={state}
                     index={index}
                   />
 
                   {index !== listItems.length - 1 && (
-                    <img className={list.arrow} src={arrow} />
+                    <img alt="стрелка" className={list.arrow} src={arrow} />
                   )}
 
-                  {currentIndexToDelete == index && (
+                  {currentIndexToDelete === index && (
                     <Circle
                       extraClass={list.smallStackItemBottom}
                       letter={number?.toString()}
-                      isChanging={true}
+                      state={ElementStates.Changing}
                       isSmall={true}
                     />
                   )}

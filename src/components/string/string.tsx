@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import string from "./string.module.css";
 import { Circle } from "../ui/circle/circle";
+import { Button } from "../ui/button/button";
+import { Input } from "../ui/input/input";
+import { DELAY_IN_MS } from "../../constants/delays";
+import { ElementStates } from "../../types/element-states";
 
 type TLetterType = {
   letter: string;
@@ -15,13 +19,9 @@ export const StringComponent: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<Array<number>>([]);
   const [isChanging, setIsChanging] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (isChanging) {
-      animateStringReverse();
-    }
-  }, [isChanging]);
+  function handleReverseButton(e: any) {
+    e.preventDefault();
 
-  function handleReverseButton() {
     if (stringInput.length > 0 && !isChanging) {
       let tempArray: Array<string> = stringInput.split("");
       let tempLettersArray: Array<TLetterType> = [];
@@ -35,84 +35,94 @@ export const StringComponent: React.FC = () => {
     }
   }
 
-  function animateStringReverse() {
-    const newLettersArray = [...lettersArray];
-    let left = 0;
-    let right = newLettersArray.length - 1;
-
-    const interval = setInterval(() => {
-      if (left < right) {
-        setCurrentIndex([left, right]);
-
-        const temp = newLettersArray[left];
-        newLettersArray[left] = newLettersArray[right];
-        newLettersArray[right] = temp;
-
-        if (left !== 0 && right !== newLettersArray.length - 1) {
-          if (left === 0) {
-            newLettersArray[right + 1].isSorted = true;
+  const animateStringReverse = React.useCallback(() => {
+    setLettersArray((prevLettersArray) => {
+      const newLettersArray = [...prevLettersArray];
+      let left = 0;
+      let right = newLettersArray.length - 1;
+  
+      const interval = setInterval(() => {
+        if (left < right) {
+          setCurrentIndex([left, right]);
+  
+          const temp = newLettersArray[left];
+          newLettersArray[left] = newLettersArray[right];
+          newLettersArray[right] = temp;
+  
+          if (left !== 0 && right !== newLettersArray.length - 1) {
+            if (left === 0) {
+              newLettersArray[right + 1].isSorted = true;
+            }
+  
+            if (right === newLettersArray.length - 1) {
+              newLettersArray[left - 1].isSorted = true;
+            } else {
+              newLettersArray[left - 1].isSorted = true;
+              newLettersArray[right + 1].isSorted = true;
+            }
           }
-
-          if (right === newLettersArray.length - 1) {
-            newLettersArray[left - 1].isSorted = true;
-          } else {
-            newLettersArray[left - 1].isSorted = true;
-            newLettersArray[right + 1].isSorted = true;
+  
+          left++;
+          right--;
+        } else {
+          const tempLettersArray = [...newLettersArray];
+          for (let i: number = 0; i < tempLettersArray.length; i++) {
+            tempLettersArray[i].isSorted = true;
           }
+          clearInterval(interval);
+          setIsChanging(false);
         }
-
-        left++;
-        right--;
-
-        setLettersArray([...newLettersArray]);
-      } else {
-        const tempLettersArray = [...lettersArray];
-        for (let i: number = 0; i < tempLettersArray.length; i++) {
-          tempLettersArray[i].isSorted = true;
-        }
-        setLettersArray([...tempLettersArray]);
-        clearInterval(interval);
-        setIsChanging(false);
-      }
-    }, 1000);
-  }
+      }, DELAY_IN_MS);
+  
+      return newLettersArray;
+    });
+  }, []);
+  
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setStringInput(e.target.value);
   }
 
+  useEffect(() => {
+    if (isChanging) {
+      animateStringReverse();
+    }
+  }, [isChanging, animateStringReverse]);
+
   return (
     <SolutionLayout title="Строка">
-      <form className={string.form}>
+      <form className={string.form} onSubmit={handleReverseButton}>
         <fieldset className={string.fieldset}>
-          <input
+          <Input
+            extraClass={string.input}
+            placeholder="Введите текст"
+            type="text"
+            isLimitText={true}
+            maxLength={11}
             onChange={handleChange}
             value={stringInput}
-            type="text"
-            name="string"
-            className={string.input}
           />
-          <button
-            onClick={handleReverseButton}
-            type="button"
-            className={string.button}
-            disabled={isChanging}
-          >
-            {isChanging ? "..." : "Развернуть"}
-          </button>
+          <Button
+            text="Развернуть"
+            type="submit"
+            isLoader={isChanging}
+            disabled={isChanging || stringInput === ""}
+          />
         </fieldset>
-        <label className={string.label}>Максимум 11 символов</label>
       </form>
 
       <section className={string.resultSection}>
         <ul className={string.letters}>
           {lettersArray.map((letterObj: TLetterType, index: number) => {
+            let state: ElementStates = ElementStates.Default;
+            if (currentIndex.includes(index)) state = ElementStates.Changing;
+            if (letterObj.isSorted) state = ElementStates.Modified;
+
             return (
               <li className={string.letter} key={letterObj.id}>
                 <Circle
+                  state={state}
                   letter={letterObj.letter}
-                  isChanging={currentIndex.includes(index)}
-                  isSorted={letterObj.isSorted}
                 />
               </li>
             );

@@ -1,6 +1,8 @@
 .form {
-  max-width: 522px;
   text-align: left;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .fieldset {
@@ -8,62 +10,28 @@
   margin: 0 12px 0 0;
   border: none;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
 
 .input {
   margin: 0 12px 0 0;
-  font-family: "Segoe UI";
-  font-size: 18px;
-  line-height: 22px;
-  height: 60px;
   width: 377px;
-  border-radius: 14px;
-  font-weight: 400;
-  border: 1px solid #7a7a7a;
 }
 
-.label {
-  padding: 0 16px;
-  margin: 4px 0 0;
-  color: #3d3d3d;
-  font-family: "Segoe UI";
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
+.button:not(:last-of-type) {
+  margin-right: 80px;
 }
 
 .header {
   margin: 48px auto;
   max-width: 924px;
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   justify-content: space-between;
 }
 
-.button {
-  display: flex;
-  align-items: center;
-  padding: 18.5px 24px;
-  border: none;
-  border-radius: 14px;
-  background-color: #85cfff;
-  color: #292929;
-  font-family: "Segoe UI";
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 23px;
-  cursor: pointer;
-}
-
-.leftSection {
-  display: flex;
-  align-items: start;
-}
-
-.stack {
+.queue {
   list-style: none;
   margin: 0 auto;
   display: flex;
@@ -72,10 +40,10 @@
   flex-wrap: wrap;
 }
 
-.stackItem {
+.queueItem {
   height: 170px;
 }
 
-.stackItem:not(:last-of-type) {
+.queueItem:not(:last-of-type) {
   margin-right: 16px;
 }

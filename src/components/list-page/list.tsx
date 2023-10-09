@@ -108,7 +108,7 @@ export default class LinkedList<T> {
   }
 
   // Преобразует список в массив
-  toArray(): T[] {
+  getList(): T[] {
     const result: T[] = [];
     let current = this.head;
 

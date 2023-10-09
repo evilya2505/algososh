@@ -3,6 +3,9 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import fibbonacci from "./fibonacci-page.module.css";
 import { Circle } from "../ui/circle/circle";
 import { v4 as uuidv4 } from "uuid";
+import { Button } from "../ui/button/button";
+import { Input } from "../ui/input/input";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 type TNumberType = {
   number: number;
@@ -18,77 +21,69 @@ export const FibonacciPage: React.FC = () => {
     setStringInput(e.target.value);
   }
 
-  function handleFibonacciButton() {
+  function handleFibonacciButton(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     setNumbersArray([]);
 
     const inputNumber = parseInt(stringInput, 10);
 
-    if (!isNaN(inputNumber) && inputNumber >= 0 && inputNumber <= 19) {
-      setIsLoading(true);
+    setIsLoading(true);
 
-      const sequence: TNumberType[] = [];
-      for (let i = 0; i <= inputNumber; i++) {
-        sequence.push({
-          number: calculateFibonacci(i),
-          id: uuidv4(),
-        });
-      }
-
-      const delay = 500;
-      const totalDelay = 500 * sequence.length;
-      sequence.forEach((item, index) => {
-        setTimeout(() => {
-          setNumbersArray((prevNumbers) => [...prevNumbers, item]);
-        }, delay * (index + 1));
+    const sequence: TNumberType[] = [];
+    for (let i = 0; i <= inputNumber; i++) {
+      sequence.push({
+        number: calculateFibonacci(i),
+        id: uuidv4(),
       });
-
-      setTimeout(() => {
-        setIsLoading(false);
-      }, totalDelay);
-    } else {
-      setNumbersArray([]);
     }
+
+    const totalDelay = SHORT_DELAY_IN_MS * sequence.length;
+
+    sequence.forEach((item, index) => {
+      setTimeout(() => {
+        setNumbersArray((prevNumbers) => [...prevNumbers, item]);
+      }, SHORT_DELAY_IN_MS * (index + 1));
+    });
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, totalDelay);
   }
 
   function calculateFibonacci(n: number): number {
-    if (n <= 1) {
-      return n;
+    if (n === 0) {
+      return 1;
+    } else if (n === 1) {
+      return 1;
     } else {
-      return calculateFibonacci(n - 1) + calculateFibonacci(n - 2);
+      let prev1 = 1;
+      let prev2 = 1;
+      let current = 0;
+  
+      for (let i = 2; i <= n; i++) {
+        current = prev1 + prev2;
+        prev1 = prev2;
+        prev2 = current;
+      }
+  
+      return current;
     }
-  }
+  }  
 
   return (
     <SolutionLayout title="Последовательность Фибоначчи">
-      <form className={fibbonacci.form}>
+      <form className={fibbonacci.form} onSubmit={handleFibonacciButton}>
         <fieldset className={fibbonacci.fieldset}>
-          <input
-            onChange={handleChange}
-            value={stringInput}
-            type="number"
-            name="string"
-            className={fibbonacci.input}
-            placeholder="Введите число (макс. 19)"
-            min="0"
-            max="19"
-          />
-          <button
-            onClick={handleFibonacciButton}
-            type="button"
-            className={fibbonacci.button}
-            disabled={isLoading}
-          >
-            {isLoading ? "..." : "Рассчитать"}
-          </button>
+          <Input extraClass={fibbonacci.input} placeholder="Введите текст" type="number" isLimitText={true} min={1} max={19} onChange={handleChange}
+        value={stringInput}/>
+          <Button text="Рассчитать" type="submit" isLoader={isLoading} disabled={isLoading || stringInput === ""}/>
         </fieldset>
-        <label className={fibbonacci.label}>Максимальное число — 19</label>
       </form>
       <section className={fibbonacci.resultSection}>
         <ul className={fibbonacci.letters}>
           {numbersArray.map((numberObj, index) => (
             <li className={fibbonacci.letter} key={numberObj.id}>
-              <Circle letter={numberObj.number.toString()} />
-              <p className={fibbonacci.index}>{index}</p>
+              <Circle letter={numberObj.number.toString()} index={index}/>
             </li>
           ))}
         </ul>
