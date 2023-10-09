@@ -1,0 +1,77 @@
+.header {
+  margin: 48px auto 0;
+  max-width: 924px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.button {
+  display: flex;
+  align-items: center;
+  padding: 18.5px 24px;
+  border: none;
+  border-radius: 14px;
+  background-color: #85cfff;
+  color: #292929;
+  font-family: "Segoe UI";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 23px;
+  cursor: pointer;
+}
+
+.buttonIcon {
+  margin-right: 8px;
+}
+
+.buttonText {
+  margin: 0;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  margin-right: 80px;
+}
+
+.radios {
+  margin-right: 52px;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  column-gap: 40px;
+}
+
+.sortingButtons {
+  display: grid;
+  column-gap: 12px;
+  grid-template-columns: repeat(2, auto);
+}
+
+.resultsSection {
+  margin: 48px auto 0;
+}
+
+.numbers {
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  list-style: none;
+}
+
+.number:not(:last-of-type) {
+  margin-right: 10px;
+}
+
+.column {
+  width: 50px;
+  background-color: var(--default-color);
+}
+
+.changing {
+  background-color: var(--changing-color);
+}
+
+.modified {
+  background-color: var(--modified-color);
+}

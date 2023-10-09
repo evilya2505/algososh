@@ -11,6 +11,8 @@ interface CircleProps {
   tailType?: "string" | "element";
   extraClass?: string;
   isSmall?: boolean;
+  isChanging?: boolean;
+  isSorted?: boolean;
 }
 
 export const Circle: React.FC<CircleProps> = ({
@@ -21,6 +23,8 @@ export const Circle: React.FC<CircleProps> = ({
   tail,
   extraClass = "",
   isSmall,
+  isChanging,
+  isSorted,
 }) => {
   return (
     <div className={`${styles.content} ${extraClass}`}>
@@ -36,7 +40,7 @@ export const Circle: React.FC<CircleProps> = ({
       <div
         className={`${styles.circle}  ${isSmall ? styles.small : ""} ${
           styles[state]
-        }`}
+        } ${isChanging && styles.changing} ${isSorted && styles.modified}`}
       >
         <p
           className={`text text_type_circle text_color_input ${styles.letter}`}

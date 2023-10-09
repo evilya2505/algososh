@@ -1,0 +1,136 @@
+.form {
+  /* max-width: 522px; */
+  text-align: left;
+}
+
+.fieldset {
+  padding: 0;
+  margin: 0;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.fieldset:not(:last-of-type) {
+  margin-bottom: 4px;
+}
+
+.fieldset:last-of-type {
+  margin-top: 12px;
+}
+
+.input {
+  padding: 19px 30px 19px 16px;
+  box-sizing: border-box;
+  margin: 0 12px 0 0;
+  font-family: "Segoe UI";
+  font-size: 18px;
+  line-height: 22px;
+  height: 60px;
+  width: 204px;
+  border-radius: 14px;
+  font-weight: 400;
+  border: 1px solid #7a7a7a;
+}
+
+.label {
+  padding: 0 16px;
+  color: #3d3d3d;
+  font-family: "Segoe UI";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.header {
+  margin: 48px auto;
+  max-width: 952px;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  padding: 18.5px 24px;
+  border: none;
+  border-radius: 14px;
+  background-color: #85cfff;
+  color: #292929;
+  font-family: "Segoe UI";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 23px;
+  cursor: pointer;
+}
+
+.button:not(:last-of-type) {
+  margin-right: 12px;
+}
+
+.leftSection {
+  display: flex;
+  align-items: start;
+}
+
+.stack {
+  list-style: none;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stackItem {
+  height: 230px;
+  display: grid;
+  grid-template-columns: 80px auto;
+  grid-template-rows: auto 110px 56px;
+  justify-content: center;
+  align-items: end;
+}
+
+.stackItem:not(:last-of-type) {
+  margin-right: 16px;
+}
+
+.smallStackItem {
+  margin-bottom: 8px;
+  align-self: center;
+  justify-self: center;
+}
+
+.arrow {
+  margin-left: 16px;
+  width: 24px;
+  height: 24px;
+
+  align-self: center;
+
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.bigStackItem {
+  align-self: start;
+  justify-self: center;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.smallStackItemBottom {
+  align-self: center;
+  justify-self: center;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
