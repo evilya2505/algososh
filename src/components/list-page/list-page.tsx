@@ -290,52 +290,50 @@ export const ListPage: React.FC = () => {
             if (currentIndexesToChange?.includes(index))
               state = ElementStates.Changing;
             return (
-              <>
-                <li className={list.stackItem} key={index}>
-                  {currentIndexToAdd === index && (
-                    <Circle
-                      extraClass={list.smallStackItem}
-                      letter={nextNumber?.toString()}
-                      state={ElementStates.Changing}
-                      isSmall={true}
-                    />
-                  )}
-
+              <li className={list.stackItem} key={index}>
+                {currentIndexToAdd === index && (
                   <Circle
-                    extraClass={list.bigStackItem}
-                    letter={
-                      currentIndexToDelete !== index ? number?.toString() : ""
-                    }
-                    tail={
-                      linkedList.getTailIndex() === index &&
-                      currentIndexToDelete !== index
-                        ? TAIL
-                        : null
-                    }
-                    head={
-                      linkedList.getHeadIndex() === index &&
-                      currentIndexToAdd !== index
-                        ? HEAD
-                        : null
-                    }
-                    state={state}
-                    index={index}
+                    extraClass={list.smallStackItem}
+                    letter={nextNumber?.toString()}
+                    state={ElementStates.Changing}
+                    isSmall={true}
                   />
+                )}
 
-                  {index !== listItems.length - 1 && (
-                    <img alt="стрелка" className={list.arrow} src={arrow} />
-                  )}
+                <Circle
+                  extraClass={list.bigStackItem}
+                  letter={
+                    currentIndexToDelete !== index ? number?.toString() : ""
+                  }
+                  tail={
+                    linkedList.getTailIndex() === index &&
+                    currentIndexToDelete !== index
+                      ? TAIL
+                      : null
+                  }
+                  head={
+                    linkedList.getHeadIndex() === index &&
+                    currentIndexToAdd !== index
+                      ? HEAD
+                      : null
+                  }
+                  state={state}
+                  index={index}
+                />
 
-                  {currentIndexToDelete === index && (
-                    <Circle
-                      extraClass={list.smallStackItemBottom}
-                      letter={number?.toString()}
-                      state={ElementStates.Changing}
-                      isSmall={true}
-                    />
-                  )}
-                </li>
-              </>
+                {index !== listItems.length - 1 && (
+                  <img alt="стрелка" className={list.arrow} src={arrow} />
+                )}
+
+                {currentIndexToDelete === index && (
+                  <Circle
+                    extraClass={list.smallStackItemBottom}
+                    letter={number?.toString()}
+                    state={ElementStates.Changing}
+                    isSmall={true}
+                  />
+                )}
+              </li>
             );
           })}
         </ul>

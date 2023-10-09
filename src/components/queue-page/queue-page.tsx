@@ -73,6 +73,22 @@ export const QueuePage: React.FC = () => {
   async function delay() {
     return new Promise((resolve) => setTimeout(resolve, SHORT_DELAY_IN_MS));
   }
+
+  function isEmpty() {
+    let isEmpty = true;
+    for (let i = 0; i < queueItems.length; i++) {
+      if (queueItems[i] !== undefined) {
+        isEmpty = false;
+        break;
+      }
+    }
+    return isEmpty;
+  }
+
+  React.useEffect(() => {
+    setQueueItems([...queueVar.getQueue()]);
+  }, []);
+
   return (
     <SolutionLayout title="Очередь">
       <div className={queue.header}>
@@ -93,7 +109,9 @@ export const QueuePage: React.FC = () => {
               type="submit"
               isLoader={isAddingElement}
               disabled={
-                isLoading || queueItems[queueItems.length - 1] !== undefined
+                isLoading ||
+                queueItems[queueItems.length - 1] !== undefined ||
+                input === ""
               }
             />
           </fieldset>
@@ -103,7 +121,7 @@ export const QueuePage: React.FC = () => {
             text="Удалить"
             type="button"
             isLoader={isDeletingElement}
-            disabled={isLoading}
+            disabled={isLoading || isEmpty()}
           />
           <Button
             extraClass={queue.button}
@@ -111,7 +129,7 @@ export const QueuePage: React.FC = () => {
             text="Очистить"
             type="button"
             isLoader={isClearing}
-            disabled={isLoading}
+            disabled={isLoading || isEmpty()}
           />
         </form>
       </div>
