@@ -9,11 +9,11 @@ import { Input } from "../ui/input/input";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { ElementStates } from "../../types/element-states";
 
-const queueVar = new Queue<number>(7);
+const queueVar = new Queue<string>(7);
 
 export const QueuePage: React.FC = () => {
   const [input, setInput] = React.useState<string>("");
-  const [queueItems, setQueueItems] = React.useState<Array<number | undefined>>(
+  const [queueItems, setQueueItems] = React.useState<Array<undefined | string>>(
     queueVar.getQueue()
   );
   const [currentIndex, setCurrentIndex] = React.useState<number | undefined>(
@@ -34,7 +34,7 @@ export const QueuePage: React.FC = () => {
 
     setIsAddingElement(true);
     setIsLoading(true);
-    queueVar.enqueue(parseInt(input));
+    queueVar.enqueue(input);
     setCurrentIndex(queueVar.tailIndex());
     setQueueItems([...queueVar.getQueue()]);
 

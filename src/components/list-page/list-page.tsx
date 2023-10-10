@@ -10,19 +10,19 @@ import { Input } from "../ui/input/input";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { ElementStates } from "../../types/element-states";
 
-const linkedList = new LinkedList<number>();
+const linkedList = new LinkedList<string>();
 
 export const ListPage: React.FC = () => {
   const [input, setInput] = React.useState<string>("");
   const [index, setIndex] = React.useState<string>("");
-  const [listItems, setListItems] = React.useState<number[]>([]);
+  const [listItems, setListItems] = React.useState<string[]>([]);
   const [currentIndexToAdd, setCurrentIndexToAdd] = React.useState<
     number | undefined
   >(undefined);
   const [currentIndexToDelete, setCurrentIndexToDelete] = React.useState<
     number | undefined
   >(undefined);
-  const [nextNumber, setNextNumber] = React.useState<number | undefined>(
+  const [nextNumber, setNextNumber] = React.useState<string | undefined>(
     undefined
   );
   const [justAddedItemIndex, setJustAddedItemIndex] = React.useState<
@@ -43,10 +43,10 @@ export const ListPage: React.FC = () => {
   const [isAddingByIndex, setIsAddingByIndex] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    linkedList.append(0);
-    linkedList.append(34);
-    linkedList.append(8);
-    linkedList.append(1);
+    linkedList.append("0");
+    linkedList.append("34");
+    linkedList.append("8");
+    linkedList.append("1");
 
     setListItems([...linkedList.getList()]);
 
@@ -72,11 +72,11 @@ export const ListPage: React.FC = () => {
     setIsAddingToHead(true);
     setIsLoading(true);
     setCurrentIndexToAdd(0);
-    setNextNumber(parseInt(input));
+    setNextNumber(input);
 
     await delay();
 
-    linkedList.prepend(parseInt(input));
+    linkedList.prepend(input);
     setListItems([...linkedList.getList()]);
     setCurrentIndexToAdd(undefined);
     setNextNumber(undefined);
@@ -93,11 +93,11 @@ export const ListPage: React.FC = () => {
     setIsAddingToTai(true);
     setIsLoading(true);
     setCurrentIndexToAdd(linkedList.size() - 1);
-    setNextNumber(parseInt(input));
+    setNextNumber(input);
 
     await delay();
 
-    linkedList.append(parseInt(input));
+    linkedList.append(input);
     setListItems([...linkedList.getList()]);
     setCurrentIndexToAdd(undefined);
     setNextNumber(undefined);
@@ -145,7 +145,7 @@ export const ListPage: React.FC = () => {
     setCurrentIndexToAdd(0);
 
     for (let i = 0; i < parseInt(index); i++) {
-      setNextNumber(parseInt(input));
+      setNextNumber(input);
 
       await delay();
 
@@ -159,7 +159,7 @@ export const ListPage: React.FC = () => {
     setNextNumber(undefined);
     setCurrentIndexesToChange([]);
 
-    linkedList.insert(parseInt(input), parseInt(index));
+    linkedList.insert(input, parseInt(index));
     setListItems([...linkedList.getList()]);
 
     setJustAddedItemIndex(parseInt(index));
@@ -267,7 +267,9 @@ export const ListPage: React.FC = () => {
                 isLoading ||
                 listItems.length === 8 ||
                 index === "" ||
-                input === ""
+                input === "" || 
+                parseInt(index) < 0 || 
+                parseInt(index) > listItems.length - 1
               }
             />
             <Button
@@ -276,7 +278,11 @@ export const ListPage: React.FC = () => {
               text="Удалить по индексу"
               type="button"
               isLoader={isDeletingByIndex}
-              disabled={isLoading || index === "" || listItems.length === 0}
+              disabled={isLoading || 
+                        index === "" || 
+                        listItems.length === 0 ||                 
+                        parseInt(index) < 0 || 
+                        parseInt(index) > listItems.length - 1}
             />
           </fieldset>
         </form>

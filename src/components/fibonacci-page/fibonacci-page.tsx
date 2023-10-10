@@ -88,7 +88,7 @@ export const FibonacciPage: React.FC = () => {
             text="Рассчитать"
             type="submit"
             isLoader={isLoading}
-            disabled={isLoading || stringInput === ""}
+            disabled={isLoading || stringInput === "" || parseInt(stringInput) > 19 || parseInt(stringInput) < 1}
           />
         </fieldset>
       </form>

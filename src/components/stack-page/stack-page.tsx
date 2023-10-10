@@ -8,11 +8,11 @@ import { Input } from "../ui/input/input";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { ElementStates } from "../../types/element-states";
 
-const stackVar = new Stack<number>();
+const stackVar = new Stack<string>();
 
 export const StackPage: React.FC = () => {
   const [input, setInput] = React.useState<string>("");
-  const [stackItems, setStackItems] = React.useState<number[]>(
+  const [stackItems, setStackItems] = React.useState<string[]>(
     stackVar.getStack()
   );
   const [currentIndex, setCurrentIndex] = React.useState<number | null>(null);
@@ -30,7 +30,7 @@ export const StackPage: React.FC = () => {
     e.preventDefault();
     setIsAddingElement(true);
     setIsLoading(true);
-    stackVar.push(parseInt(input));
+    stackVar.push(input);
     setCurrentIndex(stackVar.getSize() - 1);
     setStackItems([...stackVar.getStack()]);
 
@@ -90,7 +90,7 @@ export const StackPage: React.FC = () => {
               text="Добавить"
               type="submit"
               isLoader={isAddingElement}
-              disabled={isLoading || stackItems.length === 8}
+              disabled={isLoading || stackItems.length === 8 || input === ""}
             />
           </fieldset>
           <Button
