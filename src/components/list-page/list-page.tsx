@@ -216,7 +216,7 @@ export const ListPage: React.FC = () => {
               value={input}
             />
             <Button
-              extraClass={list.button}
+              extraClass={`${list.button} ${list.buttonAddToHead}`}
               onClick={handleAddToHeadButton}
               text="Добавить в head"
               type="button"
@@ -224,7 +224,7 @@ export const ListPage: React.FC = () => {
               disabled={isLoading || listItems.length === 8 || input === ""}
             />
             <Button
-              extraClass={list.button}
+              extraClass={`${list.button} ${list.buttonAddToTail}`}
               onClick={handleAddToTailButton}
               text="Добавить в tail"
               type="button"
@@ -232,7 +232,7 @@ export const ListPage: React.FC = () => {
               disabled={isLoading || listItems.length === 8 || input === ""}
             />
             <Button
-              extraClass={list.button}
+              extraClass={`${list.button} ${list.buttonDeleteFromHead}`}
               onClick={handleDeleteFromHeadButton}
               text="Удалить из head"
               type="button"
@@ -240,7 +240,7 @@ export const ListPage: React.FC = () => {
               disabled={isLoading || listItems.length === 0}
             />
             <Button
-              extraClass={list.button}
+              extraClass={`${list.button} ${list.buttonDeleteFromTail}`}
               onClick={handleDeleteFromTailButton}
               text="Удалить из tail"
               type="button"
@@ -258,7 +258,7 @@ export const ListPage: React.FC = () => {
               value={index}
             />
             <Button
-              extraClass={list.button}
+              extraClass={`${list.button} ${list.buttonAddByIndex}`}
               onClick={handleAddByIndexButton}
               text="Добавить по индексу"
               type="button"
@@ -267,22 +267,24 @@ export const ListPage: React.FC = () => {
                 isLoading ||
                 listItems.length === 8 ||
                 index === "" ||
-                input === "" || 
-                parseInt(index) < 0 || 
+                input === "" ||
+                parseInt(index) < 0 ||
                 parseInt(index) > listItems.length - 1
               }
             />
             <Button
-              extraClass={list.button}
+              extraClass={`${list.button} ${list.buttonDeleteByIndex}`}
               onClick={handleDeleteByIndexButton}
               text="Удалить по индексу"
               type="button"
               isLoader={isDeletingByIndex}
-              disabled={isLoading || 
-                        index === "" || 
-                        listItems.length === 0 ||                 
-                        parseInt(index) < 0 || 
-                        parseInt(index) > listItems.length - 1}
+              disabled={
+                isLoading ||
+                index === "" ||
+                listItems.length === 0 ||
+                parseInt(index) < 0 ||
+                parseInt(index) > listItems.length - 1
+              }
             />
           </fieldset>
         </form>
@@ -305,6 +307,12 @@ export const ListPage: React.FC = () => {
                     isSmall={true}
                   />
                 )}
+                {/* <Circle
+                  extraClass={list.smallStackItem}
+                  letter={nextNumber?.toString()}
+                  state={ElementStates.Changing}
+                  isSmall={true}
+                /> */}
 
                 <Circle
                   extraClass={list.bigStackItem}

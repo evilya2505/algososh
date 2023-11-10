@@ -94,7 +94,7 @@ export const StackPage: React.FC = () => {
             />
           </fieldset>
           <Button
-            extraClass={stack.button}
+            extraClass={`${stack.button} ${stack.buttonDelete}`}
             onClick={handleDeleteButton}
             text="Удалить"
             type="button"
@@ -102,7 +102,7 @@ export const StackPage: React.FC = () => {
             disabled={isLoading || stackItems.length === 0}
           />
           <Button
-            extraClass={stack.button}
+            extraClass={`${stack.button} ${stack.buttonClear}`}
             onClick={handleClearButton}
             text="Очистить"
             type="button"
@@ -121,7 +121,11 @@ export const StackPage: React.FC = () => {
               state = ElementStates.Changing;
 
             return (
-              <li className={stack.stackItem} key={index}>
+              <li
+                data-testid="circle_li"
+                className={stack.stackItem}
+                key={index}
+              >
                 <p className={stack.index}>
                   {index === stackVar.getSize() - 1 ? "top" : ""}
                 </p>

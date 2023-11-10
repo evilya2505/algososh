@@ -18,12 +18,70 @@ function randomArr() {
   return arr;
 }
 
-type TNumberType = {
+export type TNumberType = {
   number: number;
   id: string;
   isChanging: boolean;
   isSorted: boolean;
 };
+
+export function selectionSortTest(arr: TNumberType[], isDescending = false) {
+  const newArray = [...arr];
+  const n = newArray.length;
+
+  for (
+    let currentElementIndex = 0;
+    currentElementIndex < n - 1;
+    currentElementIndex++
+  ) {
+    let indexToCompare = currentElementIndex;
+
+    for (let i = currentElementIndex + 1; i < n; i++) {
+      if (
+        (isDescending ? -1 : 1) *
+          (newArray[i].number - newArray[indexToCompare].number) <
+        0
+      ) {
+        indexToCompare = i;
+      }
+    }
+
+    newArray[indexToCompare].isSorted = true;
+
+    if (indexToCompare !== currentElementIndex) {
+      const temp = newArray[indexToCompare];
+      newArray[indexToCompare] = newArray[currentElementIndex];
+      newArray[currentElementIndex] = temp;
+    }
+  }
+
+  for (let i = 0; i < newArray.length; i++) {
+    if (!newArray[i].isSorted) newArray[i].isSorted = true;
+  }
+
+  return newArray;
+}
+
+export function bubbleSortTest(arr: number[], isDescending = false) {
+  const newArray = [...arr];
+  const n = newArray.length;
+  let swapped;
+
+  do {
+    swapped = false;
+
+    for (let i = 0; i < n - 1; i++) {
+      if ((isDescending ? -1 : 1) * (newArray[i] - newArray[i + 1]) > 0) {
+        const temp = newArray[i];
+        newArray[i] = newArray[i + 1];
+        newArray[i + 1] = temp;
+        swapped = true;
+      }
+    }
+  } while (swapped);
+
+  return newArray;
+}
 
 export const SortingPage: React.FC = () => {
   const [isFirstChecked, setIsFirstChecked] = React.useState<boolean>(true);

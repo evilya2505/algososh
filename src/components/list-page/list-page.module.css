@@ -98,3 +98,21 @@
   grid-row-start: 3;
   grid-row-end: 4;
 }
+
+.buttonDeleteFromTail {
+}
+
+.buttonDeleteFromHead {
+}
+
+.buttonAddToTail {
+}
+
+.buttonAddToHead {
+}
+
+.buttonDeleteByIndex {
+}
+
+.buttonAddByIndex {
+}

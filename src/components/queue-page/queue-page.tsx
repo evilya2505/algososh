@@ -116,7 +116,7 @@ export const QueuePage: React.FC = () => {
             />
           </fieldset>
           <Button
-            extraClass={queue.button}
+            extraClass={`${queue.button} ${queue.buttonDelete}`}
             onClick={handleDeleteButton}
             text="Удалить"
             type="button"
@@ -124,7 +124,7 @@ export const QueuePage: React.FC = () => {
             disabled={isLoading || isEmpty()}
           />
           <Button
-            extraClass={queue.button}
+            extraClass={`${queue.button} ${queue.buttonClear}`}
             onClick={handleClearButton}
             text="Очистить"
             type="button"

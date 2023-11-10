@@ -88,14 +88,23 @@ export const FibonacciPage: React.FC = () => {
             text="Рассчитать"
             type="submit"
             isLoader={isLoading}
-            disabled={isLoading || stringInput === "" || parseInt(stringInput) > 19 || parseInt(stringInput) < 1}
+            disabled={
+              isLoading ||
+              stringInput === "" ||
+              parseInt(stringInput) > 19 ||
+              parseInt(stringInput) < 1
+            }
           />
         </fieldset>
       </form>
       <section className={fibbonacci.resultSection}>
         <ul className={fibbonacci.letters}>
           {numbersArray.map((numberObj, index) => (
-            <li className={fibbonacci.letter} key={numberObj.id}>
+            <li
+              data-testid="circle_li"
+              className={fibbonacci.letter}
+              key={numberObj.id}
+            >
               <Circle letter={numberObj.number.toString()} index={index} />
             </li>
           ))}

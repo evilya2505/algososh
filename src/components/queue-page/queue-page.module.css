@@ -47,3 +47,9 @@
 .queueItem:not(:last-of-type) {
   margin-right: 16px;
 }
+
+.buttonDelete {
+}
+
+.buttonClear {
+}

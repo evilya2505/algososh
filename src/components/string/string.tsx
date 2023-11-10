@@ -118,7 +118,11 @@ export const StringComponent: React.FC = () => {
             if (letterObj.isSorted) state = ElementStates.Modified;
 
             return (
-              <li className={string.letter} key={letterObj.id}>
+              <li
+                data-testid="circle_li"
+                className={string.letter}
+                key={letterObj.id}
+              >
                 <Circle state={state} letter={letterObj.letter} />
               </li>
             );
