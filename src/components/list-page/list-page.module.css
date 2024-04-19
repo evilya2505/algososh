@@ -1,0 +1,118 @@
+.form {
+  text-align: left;
+}
+
+.fieldset {
+  padding: 0;
+  margin: 0;
+  border: none;
+  display: flex;
+  align-items: flex-start;
+}
+
+.fieldset:not(:last-of-type) {
+  margin-bottom: 4px;
+}
+
+.fieldset:last-of-type {
+  margin-top: 12px;
+}
+
+.input {
+  margin: 0 12px 0 0;
+  width: 204px;
+}
+
+.header {
+  margin: 48px auto;
+  max-width: 952px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.button:not(:last-of-type) {
+  margin-right: 12px;
+}
+
+.leftSection {
+  display: flex;
+  align-items: flex-start;
+}
+
+.stack {
+  list-style: none;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stackItem {
+  height: 230px;
+  display: grid;
+  grid-template-columns: 80px auto;
+  grid-template-rows: auto 110px 56px;
+  justify-content: center;
+  align-items: end;
+}
+
+.stackItem:not(:last-of-type) {
+  margin-right: 16px;
+}
+
+.smallStackItem {
+  margin-bottom: 8px;
+  align-self: center;
+  justify-self: center;
+}
+
+.arrow {
+  margin-left: 16px;
+  width: 24px;
+  height: 24px;
+
+  align-self: center;
+
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.bigStackItem {
+  align-self: start;
+  justify-self: center;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.smallStackItemBottom {
+  align-self: center;
+  justify-self: center;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+
+.buttonDeleteFromTail {
+}
+
+.buttonDeleteFromHead {
+}
+
+.buttonAddToTail {
+}
+
+.buttonAddToHead {
+}
+
+.buttonDeleteByIndex {
+}
+
+.buttonAddByIndex {
+}
